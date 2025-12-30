@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync, existsSync } from 'fs';
-import { join, dirname } from 'path';
+import { join, dirname, parse } from 'path';
 import { fileURLToPath } from 'url';
 import { parse as parseYaml } from 'yaml';
 
@@ -18,19 +18,29 @@ export interface AgentConfig {
  * Get the agents directory path
  */
 function getAgentsDir(): string {
-    // Check for agents in project's docs/VibeCode-Agents first
-    const projectAgentsDir = join(process.cwd(), 'docs', 'VibeCode-Agents');
-    if (existsSync(projectAgentsDir)) {
-        return projectAgentsDir;
+    // 1. Search up the directory tree for 'docs/VibeCode-Agents'
+    let currentDir = process.cwd();
+    const root = parse(currentDir).root;
+
+    while (true) {
+        const potentialDir = join(currentDir, 'docs', 'VibeCode-Agents');
+        if (existsSync(potentialDir)) {
+            return potentialDir;
+        }
+
+        if (currentDir === root) {
+            break;
+        }
+        currentDir = dirname(currentDir);
     }
 
-    // Fall back to package's bundled agents
+    // 2. Fall back to package's bundled agents
     const packageAgentsDir = join(__dirname, '..', '..', 'agents');
-    if (existsSync(packageAgentsDir)) {
+    if (existsSync(packageAgentsDir) && readdirSync(packageAgentsDir).length > 0) {
         return packageAgentsDir;
     }
 
-    throw new Error('No agents directory found. Create docs/VibeCode-Agents or install with bundled agents.');
+    throw new Error('No agents directory found. Please ensure you are inside a project with "docs/VibeCode-Agents".');
 }
 
 /**
