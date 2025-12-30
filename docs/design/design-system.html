@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer - Design System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#EFF6FF',
+                            100: '#DBEAFE',
+                            200: '#BFDBFE',
+                            300: '#93C5FD',
+                            400: '#60A5FA',
+                            500: '#3B82F6',
+                            600: '#2563EB',
+                            700: '#1D4ED8',
+                            800: '#1E40AF',
+                            900: '#1E3A8A',
+                        },
+                        secondary: {
+                            50: '#F8FAFC',
+                            100: '#F1F5F9',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1E293B',
+                            900: '#0F172A',
+                        },
+                        accent: {
+                            50: '#ECFDF5',
+                            100: '#D1FAE5',
+                            200: '#A7F3D0',
+                            300: '#6EE7B7',
+                            400: '#34D399',
+                            500: '#10B981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065F46',
+                            900: '#064E3B',
+                        },
+                        error: {
+                            50: '#FEF2F2',
+                            100: '#FEE2E2',
+                            200: '#FECACA',
+                            300: '#FCA5A5',
+                            400: '#F87171',
+                            500: '#EF4444',
+                            600: '#DC2626',
+                            700: '#B91C1C',
+                            800: '#991B1B',
+                            900: '#7F1D1D',
+                        },
+                        background: {
+                            DEFAULT: '#FFFFFF',
+                            subtle: '#F8FAFC',
+                            muted: '#F1F5F9',
+                        },
+                        text: {
+                            DEFAULT: '#1E293B',
+                            secondary: '#64748B',
+                            muted: '#94A3B8',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '88': '22rem',
+                        '128': '32rem',
+                    },
+                    borderRadius: {
+                        'xl': '12px',
+                        '2xl': '16px',
+                        '3xl': '24px',
+                        'full': '9999px',
+                    },
+                    boxShadow: {
+                        'soft': '0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 6px rgba(0, 0, 0, 0.05)',
+                        'medium': '0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 15px rgba(0, 0, 0, 0.08)',
+                        'strong': '0 10px 15px rgba(0, 0, 0, 0.1), 0 20px 25px rgba(0, 0, 0, 0.08)',
+                    },
+                    fontSize: {
+                        '7xl': ['4rem', { lineHeight: '1' }],
+                        '8xl': ['6rem', { lineHeight: '1' }],
+                        '9xl': ['8rem', { lineHeight: '1' }],
+                    },
+                    animation: {
+                        'spin-slow': 'spin 3s linear infinite',
+                        'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 1s infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .progress-ring {
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.1s linear;
+            stroke-linecap: round;
+        }
+
+        .btn-hover {
+            transition: all 0.2s ease;
+        }
+
+        .btn-hover:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+        }
+
+        .btn-hover:active {
+            transform: translateY(0);
+        }
+
+        .glass {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .focus-ring {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+        }
+
+        .focus-ring:focus {
+            outline-color: rgba(59, 130, 246, 0.5);
+        }
+    </style>
+</head>
+
+<body class="bg-background font-sans text-text">
+    <div class="max-w-6xl mx-auto p-8">
+        <!-- Header -->
+        <header class="mb-12">
+            <h1 class="text-4xl font-bold text-secondary-900 mb-2">Pomodoro Timer Design System</h1>
+            <p class="text-secondary-600 text-lg">Clean, minimalist interface for focused productivity</p>
+        </header>
+
+        <!-- Branding -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-semibold mb-6 text-secondary-800">Branding</h2>
+            <div class="bg-white rounded-xl p-8 shadow-soft border border-secondary-100">
+                <div class="flex items-center gap-6">
+                    <div class="w-16 h-16 bg-primary-500 rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-secondary-900">Focus Timer</h3>
+                        <p class="text-secondary-600">Simple Pomodoro productivity</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Color Palette -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-semibold mb-6 text-secondary-800">Color Palette</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Primary Colors -->
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <h3 class="font-semibold text-secondary-800 mb-4">Primary</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-secondary-600">Primary 500</span>
+                            <span class="text-xs text-secondary-500">#3B82F6</span>
+                        </div>
+                        <div class="h-12 bg-primary-500 rounded-lg"></div>
+                        <div class="grid grid-cols-5 gap-1">
+                            <div class="h-8 bg-primary-100 rounded"></div>
+                            <div class="h-8 bg-primary-300 rounded"></div>
+                            <div class="h-8 bg-primary-500 rounded"></div>
+                            <div class="h-8 bg-primary-700 rounded"></div>
+                            <div class="h-8 bg-primary-900 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Colors -->
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <h3 class="font-semibold text-secondary-800 mb-4">Secondary</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-secondary-600">Secondary 500</span>
+                            <span class="text-xs text-secondary-500">#64748B</span>
+                        </div>
+                        <div class="h-12 bg-secondary-500 rounded-lg"></div>
+                        <div class="grid grid-cols-5 gap-1">
+                            <div class="h-8 bg-secondary-100 rounded"></div>
+                            <div class="h-8 bg-secondary-300 rounded"></div>
+                            <div class="h-8 bg-secondary-500 rounded"></div>
+                            <div class="h-8 bg-secondary-700 rounded"></div>
+                            <div class="h-8 bg-secondary-900 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accent Colors -->
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <h3 class="font-semibold text-secondary-800 mb-4">Accent</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-secondary-600">Success</span>
+                            <span class="text-xs text-secondary-500">#10B981</span>
+                        </div>
+                        <div class="h-12 bg-accent-500 rounded-lg"></div>
+                        <div class="grid grid-cols-5 gap-1">
+                            <div class="h-8 bg-accent-100 rounded"></div>
+                            <div class="h-8 bg-accent-300 rounded"></div>
+                            <div class="h-8 bg-accent-500 rounded"></div>
+                            <div class="h-8 bg-accent-700 rounded"></div>
+                            <div class="h-8 bg-accent-900 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Colors -->
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <h3 class="font-semibold text-secondary-800 mb-4">Error</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-secondary-600">Error 500</span>
+                            <span class="text-xs text-secondary-500">#EF4444</span>
+                        </div>
+                        <div class="h-12 bg-error-500 rounded-lg"></div>
+                        <div class="grid grid-cols-5 gap-1">
+                            <div class="h-8 bg-error-100 rounded"></div>
+                            <div class="h-8 bg-error-300 rounded"></div>
+                            <div class="h-8 bg-error-500 rounded"></div>
+                            <div class="h-8 bg-error-700 rounded"></div>
+                            <div class="h-8 bg-error-900 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Background Colors -->
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <h3 class="font-semibold text-secondary-800 mb-4">Background</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-secondary-600">Background</span>
+                            <span class="text-xs text-secondary-500">#FFFFFF</span>
+                        </div>
+                        <div class="h-12 bg-background rounded-lg border border-secondary-200"></div>
+                        <div class="grid grid-cols-3 gap-1">
+                            <div class="h-8 bg-background-subtle rounded"></div>
+                            <div class="h-8 bg-background-muted rounded"></div>
+                            <div class="h-8 bg-secondary-50 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Colors -->
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <h3 class="font-semibold text-secondary-800 mb-4">Text</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-secondary-600">Primary Text</span>
+                            <span class="text-xs text-secondary-500">#1E293B</span>
+                        </div>
+                        <div class="h-12 bg-text rounded-lg"></div>
+                        <div class="grid grid-cols-3 gap-1">
+                            <div class="h-8 bg-text-secondary rounded"></div>
+                            <div class="h-8 bg-text-muted rounded"></div>
+                            <div class="h-8 bg-white rounded border border-secondary-200"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-semibold mb-6 text-secondary-800">Typography</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <h3 class="font-semibold text-secondary-800 mb-4">Font Family</h3>
+                    <div class="space-y-2">
+                        <div class="font-sans">
+                            <span class="font-medium text-secondary-600">Primary Font:</span>
+                            <div class="text-2xl font-semibold">Inter</div>
+                        </div>
+                        <div class="text-sm text-secondary-600">
+                            Fallback: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <h3 class="font-semibold text-secondary-800 mb-4">Font Sizes</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-9xl font-bold text-secondary-900">8rem</span>
+                            <span class="text-sm text-secondary-600">9xl - Timer Display</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-7xl font-bold text-secondary-900">4rem</span>
+                            <span class="text-sm text-secondary-600">7xl - Large Headings</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-semibold text-secondary-800">1.5rem</span>
+                            <span class="text-sm text-secondary-600">2xl - Section Titles</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-base text-secondary-700">1rem</span>
+                            <span class="text-sm text-secondary-600">base - Body Text</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-secondary-600">0.875rem</span>
+                            <span class="text-sm text-secondary-600">sm - Captions</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Spacing -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-semibold mb-6 text-secondary-800">Spacing</h2>
+            <div class="bg-white rounded-xl p-8 shadow-soft border border-secondary-100">
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+                    <div class="text-center">
+                        <div class="h-1 bg-primary-500 rounded mb-2"></div>
+                        <span class="text-xs text-secondary-600">0.25rem</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="h-2 bg-primary-500 rounded mb-2"></div>
+                        <span class="text-xs text-secondary-600">0.5rem</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="h-3 bg-primary-500 rounded mb-2"></div>
+                        <span class="text-xs text-secondary-600">0.75rem</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="h-4 bg-primary-500 rounded mb-2"></div>
+                        <span class="text-xs text-secondary-600">1rem</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="h-5 bg-primary-500 rounded mb-2"></div>
+                        <span class="text-xs text-secondary-600">1.25rem</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="h-6 bg-primary-500 rounded mb-2"></div>
+                        <span class="text-xs text-secondary-600">1.5rem</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="h-8 bg-primary-500 rounded mb-2"></div>
+                        <span class="text-xs text-secondary-600">2rem</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="h-10 bg-primary-500 rounded mb-2"></div>
+                        <span class="text-xs text-secondary-600">2.5rem</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Components -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-semibold mb-6 text-secondary-800">Core Components</h2>
+
+            <!-- Timer Display -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4 text-secondary-800">Timer Display</h3>
+                <div class="bg-white rounded-xl p-8 shadow-soft border border-secondary-100">
+                    <div class="flex flex-col items-center gap-6">
+                        <!-- Large Timer -->
+                        <div class="text-8xl font-bold text-secondary-900 font-mono">
+                            25:00
+                        </div>
+                        <div class="text-lg text-secondary-600 uppercase tracking-wide">
+                            Work Session
+                        </div>
+
+                        <!-- Progress Ring -->
+                        <div class="relative">
+                            <svg class="w-32 h-32 transform -rotate-90" viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="54" fill="none" stroke="#E2E8F0" stroke-width="8"
+                                    class="progress-ring-circle"></circle>
+                                <circle cx="60" cy="60" r="54" fill="none" stroke="#3B82F6" stroke-width="8"
+                                    stroke-dasharray="339.292" stroke-dashoffset="169.646" class="progress-ring-circle">
+                                </circle>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-sm text-secondary-600">50%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4 text-secondary-800">Buttons</h3>
+                <div class="bg-white rounded-xl p-8 shadow-soft border border-secondary-100">
+                    <div class="flex flex-wrap gap-4">
+                        <button
+                            class="btn-hover px-6 py-3 bg-primary-500 text-white rounded-xl font-semibold shadow-medium hover:bg-primary-600 focus:ring-4 focus:ring-primary-200 focus-ring">
+                            Start
+                        </button>
+                        <button
+                            class="btn-hover px-6 py-3 bg-secondary-100 text-secondary-700 rounded-xl font-semibold shadow-soft hover:bg-secondary-200 focus:ring-4 focus:ring-secondary-100 focus-ring">
+                            Pause
+                        </button>
+                        <button
+                            class="btn-hover px-6 py-3 bg-secondary-500 text-white rounded-xl font-semibold shadow-soft hover:bg-secondary-600 focus:ring-4 focus:ring-secondary-200 focus-ring">
+                            Reset
+                        </button>
+                        <button
+                            class="btn-hover px-6 py-3 bg-accent-500 text-white rounded-xl font-semibold shadow-soft hover:bg-accent-600 focus:ring-4 focus:ring-accent-200 focus-ring">
+                            Complete
+                        </button>
+                        <button
+                            class="btn-hover px-6 py-3 bg-error-500 text-white rounded-xl font-semibold shadow-soft hover:bg-error-600 focus:ring-4 focus:ring-error-200 focus-ring">
+                            Stop
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Session Controls -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4 text-secondary-800">Session Controls</h3>
+                <div class="bg-white rounded-xl p-8 shadow-soft border border-secondary-100">
+                    <div class="flex flex-wrap gap-3">
+                        <button
+                            class="btn-hover px-4 py-2 bg-primary-100 text-primary-700 rounded-lg font-medium hover:bg-primary-200 focus:ring-4 focus:ring-primary-100 focus-ring">
+                            Work (25:00)
+                        </button>
+                        <button
+                            class="btn-hover px-4 py-2 bg-accent-100 text-accent-700 rounded-lg font-medium hover:bg-accent-200 focus:ring-4 focus:ring-accent-100 focus-ring">
+                            Short Break (5:00)
+                        </button>
+                        <button
+                            class="btn-hover px-4 py-2 bg-secondary-100 text-secondary-700 rounded-lg font-medium hover:bg-secondary-200 focus:ring-4 focus:ring-secondary-100 focus-ring">
+                            Long Break (15:00)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cards -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4 text-secondary-800">Cards</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                        <h4 class="font-semibold text-secondary-800 mb-2">Basic Card</h4>
+                        <p class="text-secondary-600 text-sm">Simple card with subtle shadow and rounded corners.</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-medium border border-secondary-100">
+                        <h4 class="font-semibold text-secondary-800 mb-2">Elevated Card</h4>
+                        <p class="text-secondary-600 text-sm">Card with medium shadow for emphasis.</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-strong border border-secondary-100">
+                        <h4 class="font-semibold text-secondary-800 mb-2">Prominent Card</h4>
+                        <p class="text-secondary-600 text-sm">Card with strong shadow for important content.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inputs -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4 text-secondary-800">Inputs</h3>
+                <div class="bg-white rounded-xl p-8 shadow-soft border border-secondary-100">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-secondary-700 mb-2">Work Duration</label>
+                            <input type="number"
+                                class="w-full px-4 py-3 border border-secondary-200 rounded-lg focus:ring-2 focus:ring-primary-200 focus:border-primary-500 focus-ring"
+                                placeholder="25">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-secondary-700 mb-2">Break Duration</label>
+                            <input type="number"
+                                class="w-full px-4 py-3 border border-secondary-200 rounded-lg focus:ring-2 focus:ring-primary-200 focus:border-primary-500 focus-ring"
+                                placeholder="5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toggle Switch -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4 text-secondary-800">Toggle Switch</h3>
+                <div class="bg-white rounded-xl p-8 shadow-soft border border-secondary-100">
+                    <div class="flex items-center gap-4">
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer" checked>
+                            <div
+                                class="relative w-11 h-6 bg-secondary-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:bg-primary-600 after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600">
+                            </div>
+                            <span class="ms-3 text-sm font-medium text-secondary-700">Audio Enabled</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4 text-secondary-800">Progress Bar</h3>
+                <div class="bg-white rounded-xl p-8 shadow-soft border border-secondary-100">
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm text-secondary-600 mb-1">
+                                <span>Work Session</span>
+                                <span>50%</span>
+                            </div>
+                            <div class="w-full bg-secondary-100 rounded-full h-3">
+                                <div class="bg-primary-500 h-3 rounded-full" style="width: 50%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm text-secondary-600 mb-1">
+                                <span>Short Break</span>
+                                <span>25%</span>
+                            </div>
+                            <div class="w-full bg-secondary-100 rounded-full h-3">
+                                <div class="bg-accent-500 h-3 rounded-full" style="width: 25%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layout Examples -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-semibold mb-6 text-secondary-800">Layout Examples</h2>
+
+            <!-- Mobile Layout -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4 text-secondary-800">Mobile Layout</h3>
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <div class="max-w-sm mx-auto">
+                        <!-- Header -->
+                        <div class="text-center mb-8">
+                            <h1 class="text-4xl font-bold text-secondary-900">25:00</h1>
+                            <p class="text-secondary-600 uppercase tracking-wide">Work Session</p>
+                        </div>
+
+                        <!-- Progress -->
+                        <div class="flex justify-center mb-8">
+                            <div class="relative">
+                                <svg class="w-40 h-40 transform -rotate-90" viewBox="0 0 120 120">
+                                    <circle cx="60" cy="60" r="54" fill="none" stroke="#E2E8F0" stroke-width="8">
+                                    </circle>
+                                    <circle cx="60" cy="60" r="54" fill="none" stroke="#3B82F6" stroke-width="8"
+                                        stroke-dasharray="339.292" stroke-dashoffset="169.646"></circle>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Controls -->
+                        <div class="flex gap-4 mb-6">
+                            <button
+                                class="flex-1 btn-hover py-4 bg-primary-500 text-white rounded-xl font-semibold">Start</button>
+                            <button
+                                class="flex-1 btn-hover py-4 bg-secondary-100 text-secondary-700 rounded-xl font-semibold">Pause</button>
+                        </div>
+
+                        <!-- Session Types -->
+                        <div class="grid grid-cols-3 gap-2">
+                            <button
+                                class="py-3 px-2 bg-primary-100 text-primary-700 rounded-lg text-sm font-medium">Work</button>
+                            <button
+                                class="py-3 px-2 bg-accent-100 text-accent-700 rounded-lg text-sm font-medium">Break</button>
+                            <button
+                                class="py-3 px-2 bg-secondary-100 text-secondary-700 rounded-lg text-sm font-medium">Long</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desktop Layout -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4 text-secondary-800">Desktop Layout</h3>
+                <div class="bg-white rounded-xl p-8 shadow-soft border border-secondary-100">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <!-- Timer Section -->
+                        <div class="text-center">
+                            <h1 class="text-9xl font-bold text-secondary-900 mb-4 font-mono">25:00</h1>
+                            <p class="text-xl text-secondary-600 uppercase tracking-wide mb-8">Work Session</p>
+                            <div class="flex justify-center">
+                                <div class="relative">
+                                    <svg class="w-64 h-64 transform -rotate-90" viewBox="0 0 120 120">
+                                        <circle cx="60" cy="60" r="54" fill="none" stroke="#E2E8F0" stroke-width="8">
+                                        </circle>
+                                        <circle cx="60" cy="60" r="54" fill="none" stroke="#3B82F6" stroke-width="8"
+                                            stroke-dasharray="339.292" stroke-dashoffset="169.646"></circle>
+                                    </svg>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="text-2xl text-secondary-600">50%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Controls Section -->
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-3 gap-4">
+                                <button
+                                    class="btn-hover py-4 bg-primary-500 text-white rounded-xl font-semibold text-lg">Start</button>
+                                <button
+                                    class="btn-hover py-4 bg-secondary-100 text-secondary-700 rounded-xl font-semibold text-lg">Pause</button>
+                                <button
+                                    class="btn-hover py-4 bg-error-500 text-white rounded-xl font-semibold text-lg">Reset</button>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-3">
+                                <button
+                                    class="btn-hover py-3 bg-primary-100 text-primary-700 rounded-lg font-medium">Work
+                                    (25:00)</button>
+                                <button
+                                    class="btn-hover py-3 bg-accent-100 text-accent-700 rounded-lg font-medium">Short
+                                    Break (5:00)</button>
+                                <button
+                                    class="btn-hover py-3 bg-secondary-100 text-secondary-700 rounded-lg font-medium">Long
+                                    Break (15:00)</button>
+                            </div>
+
+                            <div class="bg-secondary-50 rounded-xl p-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-secondary-700 font-medium">Session Progress</span>
+                                    <span class="text-secondary-600">3/4 completed</span>
+                                </div>
+                                <div class="w-full bg-secondary-200 rounded-full h-3 mt-2">
+                                    <div class="bg-primary-500 h-3 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Responsive Breakpoints -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-semibold mb-6 text-secondary-800">Responsive Breakpoints</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-primary-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <span class="text-primary-600 font-bold">XS</span>
+                        </div>
+                        <h4 class="font-semibold text-secondary-800 mb-2">Mobile</h4>
+                        <p class="text-sm text-secondary-600">375px - 640px</p>
+                        <p class="text-xs text-secondary-500 mt-2">Single column layout</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-primary-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <span class="text-primary-700 font-bold">SM</span>
+                        </div>
+                        <h4 class="font-semibold text-secondary-800 mb-2">Tablet</h4>
+                        <p class="text-sm text-secondary-600">640px - 768px</p>
+                        <p class="text-xs text-secondary-500 mt-2">2-column grid</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-primary-300 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <span class="text-primary-800 font-bold">MD</span>
+                        </div>
+                        <h4 class="font-semibold text-secondary-800 mb-2">Desktop</h4>
+                        <p class="text-sm text-secondary-600">768px - 1024px</p>
+                        <p class="text-xs text-secondary-500 mt-2">3-column grid</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-primary-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <span class="text-white font-bold">LG</span>
+                        </div>
+                        <h4 class="font-semibold text-secondary-800 mb-2">Large</h4>
+                        <p class="text-sm text-secondary-600">1024px+</p>
+                        <p class="text-xs text-secondary-500 mt-2">4-column grid</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Accessibility -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-semibold mb-6 text-secondary-800">Accessibility</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <h3 class="font-semibold text-secondary-800 mb-4">Color Contrast</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-secondary-900 rounded">
+                            <span class="text-white">White text on dark</span>
+                            <span class="text-xs text-secondary-300">AA Compliant</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-primary-500 rounded">
+                            <span class="text-white">White text on primary</span>
+                            <span class="text-xs text-primary-200">AA Compliant</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-white border border-secondary-200 rounded">
+                            <span class="text-secondary-900">Dark text on white</span>
+                            <span class="text-xs text-secondary-500">AA Compliant</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-secondary-100">
+                    <h3 class="font-semibold text-secondary-800 mb-4">Focus States</h3>
+                    <div class="space-y-3">
+                        <div class="p-4 border-2 border-transparent focus-ring focus:border-primary-500 rounded-lg">
+                            <span class="block text-sm font-medium text-secondary-700">Focus Ring Example</span>
+                            <span class="block text-xs text-secondary-500">Visible focus indicator</span>
+                        </div>
+                        <div class="p-4 border-2 border-transparent focus-ring focus:border-accent-500 rounded-lg">
+                            <span class="block text-sm font-medium text-secondary-700">Alternative Focus</span>
+                            <span class="block text-xs text-secondary-500">Different color scheme</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-secondary-600">
+            <p>Design System for Pomodoro Timer Web App</p>
+            <p class="text-sm">Created with Tailwind CSS and modern design principles</p>
+        </footer>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Timer - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#EFF6FF',
+                            100: '#DBEAFE',
+                            200: '#BFDBFE',
+                            300: '#93C5FD',
+                            400: '#60A5FA',
+                            500: '#3B82F6',
+                            600: '#2563EB',
+                            700: '#1D4ED8',
+                            800: '#1E40AF',
+                            900: '#1E3A8A',
+                        },
+                        secondary: {
+                            50: '#F8FAFC',
+                            100: '#F1F5F9',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1E293B',
+                            900: '#0F172A',
+                        },
+                        accent: {
+                            50: '#ECFDF5',
+                            100: '#D1FAE5',
+                            200: '#A7F3D0',
+                            300: '#6EE7B7',
+                            400: '#34D399',
+                            500: '#10B981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065F46',
+                            900: '#064E3B',
+                        },
+                        background: {
+                            DEFAULT: '#FFFFFF',
+                            subtle: '#F8FAFC',
+                            muted: '#F1F5F9',
+                        },
+                        text: {
+                            DEFAULT: '#1E293B',
+                            secondary: '#64748B',
+                            muted: '#94A3B8',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    },
+                    fontSize: {
+                        '7xl': ['4rem', { lineHeight: '1' }],
+                        '8xl': ['6rem', { lineHeight: '1' }],
+                        '9xl': ['8rem', { lineHeight: '1' }],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .progress-ring {
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.1s linear;
+            stroke-linecap: round;
+        }
+
+        .btn-hover {
+            transition: all 0.2s ease;
+        }
+
+        .btn-hover:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-hover:active {
+            transform: translateY(0);
+        }
+
+        .focus-ring {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+        }
+
+        .focus-ring:focus {
+            outline-color: rgba(59, 130, 246, 0.5);
+        }
+
+        /* Custom progress ring animation */
+        @keyframes progress-fill {
+            from {
+                stroke-dashoffset: 339.292;
+            }
+
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .progress-animate {
+            animation: progress-fill 1500ms ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="bg-background font-sans text-text min-h-screen">
+    <!-- Main Container -->
+    <div class="min-h-screen bg-gradient-to-br from-background-subtle via-background to-background-subtle">
+        <!-- Header -->
+        <header class="py-6">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h1 class="text-3xl sm:text-4xl font-bold text-secondary-900">Focus Timer</h1>
+                    <p class="text-secondary-600 mt-2">Simple Pomodoro productivity</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+
+                    <!-- Timer Section -->
+                    <div class="order-2 lg:order-1">
+                        <div class="bg-white rounded-3xl shadow-soft border border-secondary-100 p-8 lg:p-12">
+                            <!-- Session Type Indicator -->
+                            <div class="text-center mb-8">
+                                <span
+                                    class="inline-block px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-medium uppercase tracking-wide border border-primary-100">
+                                    Work Session
+                                </span>
+                            </div>
+
+                            <!-- Large Timer Display -->
+                            <div class="text-center mb-8">
+                                <div
+                                    class="text-8xl sm:text-9xl font-bold text-secondary-900 font-mono tracking-tighter">
+                                    25:00
+                                </div>
+                                <div class="mt-4 text-lg text-secondary-600">
+                                    Time remaining
+                                </div>
+                            </div>
+
+                            <!-- Progress Ring -->
+                            <div class="flex justify-center mb-8">
+                                <div class="relative">
+                                    <svg class="w-64 h-64 sm:w-80 sm:h-80" viewBox="0 0 120 120">
+                                        <!-- Background circle -->
+                                        <circle cx="60" cy="60" r="54" fill="none" stroke="#E2E8F0" stroke-width="8"
+                                            class="progress-ring-circle"></circle>
+                                        <!-- Progress circle -->
+                                        <circle cx="60" cy="60" r="54" fill="none" stroke="#3B82F6" stroke-width="8"
+                                            stroke-dasharray="339.292" stroke-dashoffset="169.646"
+                                            class="progress-ring-circle progress-animate"></circle>
+                                    </svg>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="text-2xl sm:text-3xl font-semibold text-secondary-600">
+                                            50%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Session Progress -->
+                            <div class="bg-secondary-50 rounded-xl p-4 mb-8">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-secondary-700 font-medium">Pomodoro Progress</span>
+                                    <span class="text-secondary-600 text-sm">3/4 completed</span>
+                                </div>
+                                <div class="w-full bg-secondary-200 rounded-full h-3">
+                                    <div class="bg-primary-500 h-3 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Control Buttons -->
+                            <div class="grid grid-cols-3 gap-4 mb-8">
+                                <button
+                                    class="btn-hover py-4 bg-primary-500 text-white rounded-xl font-semibold text-lg focus-ring hover:bg-primary-600 focus:ring-4 focus:ring-primary-200 transition-all duration-200">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
+                                            </path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        Start
+                                    </div>
+                                </button>
+                                <button
+                                    class="btn-hover py-4 bg-secondary-100 text-secondary-700 rounded-xl font-semibold text-lg focus-ring hover:bg-secondary-200 focus:ring-4 focus:ring-secondary-100 transition-all duration-200">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        Pause
+                                    </div>
+                                </button>
+                                <button
+                                    class="btn-hover py-4 bg-error-500 text-white rounded-xl font-semibold text-lg focus-ring hover:bg-error-600 focus:ring-4 focus:ring-error-200 transition-all duration-200">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                        Reset
+                                    </div>
+                                </button>
+                            </div>
+
+                            <!-- Session Type Buttons -->
+                            <div class="grid grid-cols-3 gap-3">
+                                <button
+                                    class="btn-hover py-3 px-4 bg-primary-100 text-primary-700 rounded-lg font-medium focus-ring hover:bg-primary-200 focus:ring-4 focus:ring-primary-100 transition-all duration-200">
+                                    <div class="flex flex-col items-center gap-1">
+                                        <span class="text-xs text-primary-600 uppercase">Work</span>
+                                        <span class="font-semibold">25:00</span>
+                                    </div>
+                                </button>
+                                <button
+                                    class="btn-hover py-3 px-4 bg-accent-100 text-accent-700 rounded-lg font-medium focus-ring hover:bg-accent-200 focus:ring-4 focus:ring-accent-100 transition-all duration-200">
+                                    <div class="flex flex-col items-center gap-1">
+                                        <span class="text-xs text-accent-600 uppercase">Short Break</span>
+                                        <span class="font-semibold">5:00</span>
+                                    </div>
+                                </button>
+                                <button
+                                    class="btn-hover py-3 px-4 bg-secondary-100 text-secondary-700 rounded-lg font-medium focus-ring hover:bg-secondary-200 focus:ring-4 focus:ring-secondary-100 transition-all duration-200">
+                                    <div class="flex flex-col items-center gap-1">
+                                        <span class="text-xs text-secondary-600 uppercase">Long Break</span>
+                                        <span class="font-semibold">15:00</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar/Info Section -->
+                    <div class="order-1 lg:order-2">
+                        <div class="space-y-6">
+                            <!-- Stats Card -->
+                            <div class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6">
+                                <h3 class="text-lg font-semibold text-secondary-800 mb-4">Today's Progress</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-secondary-600">Completed Sessions</span>
+                                        <span class="text-2xl font-bold text-secondary-900">3</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-secondary-600">Total Time</span>
+                                        <span class="text-2xl font-bold text-secondary-900">1h 15m</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-secondary-600">Streak</span>
+                                        <span class="text-2xl font-bold text-accent-600">2 days</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tips Card -->
+                            <div class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6">
+                                <h3 class="text-lg font-semibold text-secondary-800 mb-4">Pomodoro Tips</h3>
+                                <ul class="space-y-2 text-secondary-600">
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-primary-500 mt-1">•</span>
+                                        Work for 25 minutes, then take a 5-minute break
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-accent-500 mt-1">•</span>
+                                        After 4 work sessions, take a longer 15-minute break
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-secondary-500 mt-1">•</span>
+                                        Use breaks to stretch, hydrate, and rest your eyes
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Quick Actions -->
+                            <div class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6">
+                                <h3 class="text-lg font-semibold text-secondary-800 mb-4">Quick Actions</h3>
+                                <div class="space-y-3">
+                                    <button
+                                        class="w-full btn-hover py-3 px-4 bg-secondary-50 text-secondary-700 rounded-lg font-medium focus-ring hover:bg-secondary-100 focus:ring-4 focus:ring-secondary-100 transition-all duration-200 text-left">
+                                        <div class="flex items-center justify-between">
+                                            <span>Reset Session Count</span>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                    </button>
+                                    <button
+                                        class="w-full btn-hover py-3 px-4 bg-secondary-50 text-secondary-700 rounded-lg font-medium focus-ring hover:bg-secondary-100 focus:ring-4 focus:ring-secondary-100 transition-all duration-200 text-left">
+                                        <div class="flex items-center justify-between">
+                                            <span>Go to Settings</span>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                                                </path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            </svg>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="py-8 border-t border-secondary-100 bg-white/50 backdrop-blur-sm">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-secondary-600">
+                <p class="text-sm">Built with ❤️ for better focus and productivity</p>
+                <div class="mt-2 flex justify-center space-x-6 text-xs text-secondary-500">
+                    <span>Simple • Clean • Effective</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-secondary-200 shadow-soft">
+        <div class="max-w-lg mx-auto px-4 py-2">
+            <div class="grid grid-cols-3 gap-2">
+                <button
+                    class="btn-hover py-3 px-4 bg-primary-500 text-white rounded-lg font-medium focus-ring hover:bg-primary-600 focus:ring-4 focus:ring-primary-200 transition-all duration-200">
+                    <div class="flex flex-col items-center gap-1">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-xs">Start</span>
+                    </div>
+                </button>
+                <button
+                    class="btn-hover py-3 px-4 bg-secondary-100 text-secondary-700 rounded-lg font-medium focus-ring hover:bg-secondary-200 focus:ring-4 focus:ring-secondary-100 transition-all duration-200">
+                    <div class="flex flex-col items-center gap-1">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-xs">Settings</span>
+                    </div>
+                </button>
+                <button
+                    class="btn-hover py-3 px-4 bg-accent-100 text-accent-700 rounded-lg font-medium focus-ring hover:bg-accent-200 focus:ring-4 focus:ring-accent-100 transition-all duration-200">
+                    <div class="flex flex-col items-center gap-1">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                            </path>
+                        </svg>
+                        <span class="text-xs">Stats</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple timer logic for demonstration
+        let isRunning = false;
+        let timeLeft = 25 * 60; // 25 minutes in seconds
+        let timerInterval;
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function updateProgress() {
+            const progress = (1 - (timeLeft / (25 * 60))) * 100;
+            const circumference = 2 * Math.PI * 54;
+            const offset = circumference - (progress / 100 * circumference);
+
+            document.querySelector('.progress-ring-circle:last-child').style.strokeDashoffset = offset;
+            document.querySelector('.progress-ring-circle:last-child').nextElementSibling.textContent = Math.round(progress) + '%';
+        }
+
+        function startTimer() {
+            if (isRunning) return;
+
+            isRunning = true;
+            document.querySelector('h1').textContent = '25:00';
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.querySelector('.text-8xl, .text-9xl').textContent = formatTime(timeLeft);
+                updateProgress();
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    isRunning = false;
+                    timeLeft = 25 * 60;
+                    document.querySelector('.text-8xl, .text-9xl').textContent = formatTime(timeLeft);
+                    updateProgress();
+                }
+            }, 1000);
+        }
+
+        // Add click handlers
+        document.addEventListener('DOMContentLoaded', () => {
+            // Start button
+            document.querySelector('button').addEventListener('click', startTimer);
+
+            // Update progress initially
+            updateProgress();
+        });
+    </script>
+</body>
+
+</html>
