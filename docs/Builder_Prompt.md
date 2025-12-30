@@ -3,6 +3,21 @@
 ## Your Mission
 You are building a clean, minimalist Pomodoro Timer Web App - a web-based productivity tool that helps users manage their time using the Pomodoro Technique. The app should be simple, responsive, and distraction-free.
 
+## Mandatory Mockup-Driven Implementation
+
+The `/docs/mockups` folder is the **UNQUESTIONABLE source of truth** for all UI.
+
+### Rules:
+1. Before implementing ANY page, open the corresponding mockup file
+2. Replicate the mockup EXACTLY-layout, colors, spacing, typography
+3. Do NOT deviate from the design system tokens
+4. If something is unclear, reference `docs/design/design-system.html`
+5. Mobile responsiveness must match the mockup breakpoints
+
+### Design Files:
+- Design System: `docs/design/design-system.html`
+- Page Mockups: `docs/mockups/*.html`
+
 ## Technical Stack
 - **Framework**: React 18 with TypeScript
 - **Language**: TypeScript (strict mode)

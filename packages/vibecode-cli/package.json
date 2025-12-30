@@ -1,6 +1,6 @@
 {
     "name": "vibecode",
-    "version": "0.1.0",
+    "version": "0.2.3",
     "description": "VibeCode CLI - Orchestrate AI agents for autonomous development",
     "type": "module",
     "main": "dist/cli.js",
@@ -34,5 +34,9 @@
     },
     "engines": {
         "node": ">=18"
-    }
+    },
+    "files": [
+        "dist",
+        "agents"
+    ]
 }
