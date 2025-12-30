@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync, existsSync } from 'fs';
-import { join, dirname } from 'path';
+import { join, dirname, parse } from 'path';
 import { fileURLToPath } from 'url';
 import { parse as parseYaml } from 'yaml';
 
@@ -18,19 +18,64 @@ export interface AgentConfig {
  * Get the agents directory path
  */
 function getAgentsDir(): string {
-    // Check for agents in project's docs/VibeCode-Agents first
-    const projectAgentsDir = join(process.cwd(), 'docs', 'VibeCode-Agents');
-    if (existsSync(projectAgentsDir)) {
-        return projectAgentsDir;
+    // 1. Search up the directory tree for 'docs/VibeCode-Agents'
+    let currentDir = process.cwd();
+    const root = parse(currentDir).root;
+
+    // Debug logging
+    if (process.env.VIBECODE_DEBUG) {
+        console.log('[DEBUG] Searching for agents...');
+        console.log('[DEBUG] Current CWD:', currentDir);
     }
 
-    // Fall back to package's bundled agents
+    while (true) {
+        const potentialDir = join(currentDir, 'docs', 'VibeCode-Agents');
+
+        if (process.env.VIBECODE_DEBUG) {
+            console.log('[DEBUG] Checking:', potentialDir);
+        }
+
+        if (existsSync(potentialDir)) {
+            // Check if it actually contains agents
+            const files = readdirSync(potentialDir).filter(f => f.endsWith('.yaml'));
+            if (files.length > 0) {
+                if (process.env.VIBECODE_DEBUG) {
+                    console.log('[DEBUG] Found local agents:', files.length);
+                }
+                return potentialDir;
+            } else {
+                if (process.env.VIBECODE_DEBUG) {
+                    console.log('[DEBUG] Found local directory but it is empty/no-yaml. Ignoring.');
+                }
+            }
+        }
+
+        if (currentDir === root) {
+            break;
+        }
+        currentDir = dirname(currentDir);
+    }
+
+    // 2. Fall back to package's bundled agents
     const packageAgentsDir = join(__dirname, '..', '..', 'agents');
-    if (existsSync(packageAgentsDir)) {
-        return packageAgentsDir;
+
+    if (process.env.VIBECODE_DEBUG) {
+        console.log('[DEBUG] __dirname:', __dirname);
+        console.log('[DEBUG] Looking for bundled agents at:', packageAgentsDir);
     }
 
-    throw new Error('No agents directory found. Create docs/VibeCode-Agents or install with bundled agents.');
+    if (existsSync(packageAgentsDir)) {
+        const files = readdirSync(packageAgentsDir);
+        if (files.length > 0) {
+            return packageAgentsDir;
+        } else if (process.env.VIBECODE_DEBUG) {
+            console.log('[DEBUG] Bundled agents directory exists but is empty.');
+        }
+    } else if (process.env.VIBECODE_DEBUG) {
+        console.log('[DEBUG] Bundled agents directory does not exist.');
+    }
+
+    throw new Error(`No agents directory found. \nChecked:\n1. ${join(process.cwd(), 'docs', 'VibeCode-Agents')} (Local)\n2. ${packageAgentsDir} (Bundled)`);
 }
 
 /**
