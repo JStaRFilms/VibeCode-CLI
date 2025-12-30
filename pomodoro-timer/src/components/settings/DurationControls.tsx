@@ -17,7 +17,7 @@ export function DurationControls({
     return (
         <div className="space-y-6">
             <div>
-                <h3 className="text-lg font-semibold text-text-50 mb-4">Session Durations</h3>
+                <h3 className="text-lg font-semibold text-text-50 dark:text-gray-100 mb-4">Session Durations</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <Input
                         label="Work Session (minutes)"

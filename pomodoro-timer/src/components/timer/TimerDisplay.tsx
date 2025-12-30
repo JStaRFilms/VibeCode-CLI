@@ -20,7 +20,7 @@ export function TimerDisplay({ timeLeft, currentSession, isRunning }: TimerDispl
                 </div>
                 <div className="relative">
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-6xl font-bold text-text-50 font-mono">
+                        <div className="text-6xl font-bold text-text-50 dark:text-gray-100 font-mono">
                             {timeString}
                         </div>
                     </div>
@@ -30,21 +30,19 @@ export function TimerDisplay({ timeLeft, currentSession, isRunning }: TimerDispl
                             cy="50"
                             r="45"
                             fill="none"
-                            stroke="#e2e8f0"
+                            className="stroke-secondary-200 dark:stroke-secondary-700 opacity-50"
                             strokeWidth="4"
-                            className="opacity-50"
                         />
                         <circle
                             cx="50"
                             cy="50"
                             r="45"
                             fill="none"
-                            stroke="#3b82f6"
+                            className="stroke-primary-500 transition-all duration-1000 ease-linear"
                             strokeWidth="4"
                             strokeLinecap="round"
                             strokeDasharray="283"
                             strokeDashoffset={isRunning ? 283 - (283 * timeLeft) / (currentSession === 'work' ? 1500 : currentSession === 'shortBreak' ? 300 : 900) : 0}
-                            className="transition-all duration-1000 ease-linear"
                             transform="rotate(-90 50 50)"
                         />
                     </svg>

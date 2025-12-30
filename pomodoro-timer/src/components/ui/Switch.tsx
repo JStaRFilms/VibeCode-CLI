@@ -19,7 +19,7 @@ export function Switch({ checked, onChange, label, disabled = false }: SwitchPro
                     disabled={disabled}
                 />
                 <div
-                    className={`block w-10 h-6 rounded-full transition-colors ${checked ? 'bg-primary-600' : 'bg-secondary-300'
+                    className={`block w-10 h-6 rounded-full transition-colors ${checked ? 'bg-primary-600' : 'bg-secondary-300 dark:bg-gray-600'
                         } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                 />
                 <div
@@ -28,7 +28,7 @@ export function Switch({ checked, onChange, label, disabled = false }: SwitchPro
                 />
             </div>
             {label && (
-                <span className="text-sm font-medium text-secondary-700">
+                <span className="text-sm font-medium text-secondary-700 dark:text-gray-300">
                     {label}
                 </span>
             )}

@@ -3,4 +3,4 @@ export interface LocalStorageValue<T> {
     timestamp: number
 }
 
-export type StorageKey = 'timer-settings' | 'timer-state'
+export type StorageKey = 'timer-settings' | 'timer-state' | 'theme-preference'

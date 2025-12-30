@@ -8,7 +8,8 @@ describe('utils', () => {
         })
 
         it('handles conditional classes', () => {
-            expect(cn('c-red', false && 'bg-blue', 'text-bold')).toBe('c-red text-bold')
+            const condition = false
+            expect(cn('c-red', condition && 'bg-blue', 'text-bold')).toBe('c-red text-bold')
         })
 
         it('merges tailwind classes (overrides)', () => {

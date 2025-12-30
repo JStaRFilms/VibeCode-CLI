@@ -14,7 +14,7 @@ export function Input({
     return (
         <div className="space-y-1">
             {label && (
-                <label className="block text-sm font-medium text-secondary-700">
+                <label className="block text-sm font-medium text-secondary-700 dark:text-gray-300">
                     {label}
                 </label>
             )}

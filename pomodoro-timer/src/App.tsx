@@ -8,6 +8,7 @@ import { SessionTypeSelector } from './components/timer/SessionTypeSelector'
 import { SessionStats } from './components/timer/SessionStats'
 import { SettingsPanel } from './components/settings/SettingsPanel'
 import { Button } from './components/ui/Button'
+import { ThemeToggle } from './components/ThemeToggle'
 import './index.css'
 
 function AppContent() {
@@ -17,11 +18,14 @@ function AppContent() {
   const [showSettings, setShowSettings] = useState(false)
 
   return (
-    <div className="min-h-screen bg-background-50 py-8">
+    <div className="min-h-screen bg-background-50 dark:bg-gray-900 py-8 transition-colors duration-200">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <div className="container mx-auto px-4 max-w-4xl">
         <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-text-50 mb-2">Pomodoro Timer</h1>
-          <p className="text-secondary-600">Stay focused, take breaks, be productive</p>
+          <h1 className="text-4xl font-bold text-text-50 dark:text-gray-100 mb-2">Pomodoro Timer</h1>
+          <p className="text-secondary-600 dark:text-gray-400">Stay focused, take breaks, be productive</p>
         </header>
 
         <main className="space-y-8">

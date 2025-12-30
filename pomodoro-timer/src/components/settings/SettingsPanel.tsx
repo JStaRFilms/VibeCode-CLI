@@ -22,13 +22,13 @@ export function SettingsPanel({
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-2xl font-bold text-text-50 mb-4">Settings</h2>
+                <h2 className="text-2xl font-bold text-text-50 dark:text-gray-100 mb-4">Settings</h2>
                 <div className="card p-6">
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
                             <div>
-                                <h3 className="font-medium text-text-50">Audio Notifications</h3>
-                                <p className="text-sm text-secondary-600">
+                                <h3 className="font-medium text-text-50 dark:text-gray-100">Audio Notifications</h3>
+                                <p className="text-sm text-secondary-600 dark:text-gray-400">
                                     Enable sound effects for timer events
                                 </p>
                             </div>
