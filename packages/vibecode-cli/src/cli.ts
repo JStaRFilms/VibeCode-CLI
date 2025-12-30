@@ -10,7 +10,7 @@ const program = new Command();
 program
     .name('vibecode')
     .description('VibeCode CLI - Orchestrate AI agents for autonomous development')
-    .version('0.2.1');
+    .version('0.2.2');
 
 // vibecode spawn <agent> "task" [--worktree name]
 program
