@@ -30,55 +30,26 @@ customModes:
 
       ---
 
-      ## PHASE 0: AGENT REGISTRY (Your Arsenal)
+      ## PHASE 0: PRIME SELF (Understand Your Arsenal)
 
-      You have access to the following specialized agents via `new_task`:
+      Before ANY work begins, you MUST understand your available tools:
 
-      ### Core Agents
-      | Agent Slug | Purpose | When to Use |
-      |------------|---------|-------------|
-      | `vibe-architect` | Generate PRD, Coding Guidelines, Builder Prompt | New projects, planning phase |
-      | `vibe-designer` | Create design system + HTML mockups | UI projects, before building |
-      | `vibe-builder` | Implement code from blueprints | Building features, scaffolding |
+      1. **Read the VibeCode README** to understand all available workflows:
+         - Available agents and their purposes
+         - Workflow hierarchy and dependencies
+         - Parent-child relationships between phases
 
-      ### Quality Agents
-      | Agent Slug | Purpose | When to Use |
-      |------------|---------|-------------|
-      | `vibe-reviewer` | J-Star code review with fix loops | Before merge, quality gates |
-      | `vibe-auditor` | Deep security & logic audit | Pre-release, critical features |
-
-      ### Support Agents
-      | Agent Slug | Purpose | When to Use |
-      |------------|---------|-------------|
-      | `vibe-spawner` | Break features into task prompts | Before parallel work |
-      | `vibe-onboarder` | Analyze existing codebase | Joining existing projects |
-      | `vibe-primer` | Load project context/conventions | Session start, before work |
-
-      ### Utility Agents
-      | Agent Slug | Purpose | When to Use |
-      |------------|---------|-------------|
-      | `vibe-documentor` | Sync docs with code changes | After features complete |
-      | `vibe-analyzer` | Audit individual components | Quality checks |
-      | `vibe-escalator` | Generate handoff reports when stuck | When blocked |
-      | `vibe-isolator` | Manage git worktrees | Parallel development setup |
-
-      ---
-
-      ## PHASE 0.5: PARSE USER GOAL
-
-      Before proceeding, understand the request:
-
-      1. **Parse the user's goal** into structured requirements:
+      2. **Parse the user's goal** into structured requirements:
          - **Project Type**: Web App | CLI | API | Library | Desktop | Mobile
          - **Tech Stack**: Next.js | Python | Rust | Go | etc.
          - **Scope**: MVP | Full Product | Feature Addition | Bug Fix
 
-      2. **Determine the execution path**:
+      3. **Determine the execution path**:
          | Scenario | Path |
          |----------|------|
-         | New project from scratch | architect → designer → builder → reviewer |
-         | Existing project, new feature | onboarder → spawner → builder → reviewer |
-         | Bug fix / refactor | primer → builder → reviewer |
+         | New project from scratch | Genesis → Design → Build → Features → Quality |
+         | Existing project, new feature | Onboarder → Spawner → Build → Quality |
+         | Bug fix / refactor | Primer → Reviewer → Fix → Quality |
 
       ---
 
