@@ -112,8 +112,10 @@ ${task}
 You are running as a Gemini CLI agent in YOLO mode.
 - All actions are auto-approved
 - Work autonomously and efficiently
-- Commit your changes when done
-- Use clear commit messages
+- **CRITICAL:** When you are finished:
+  1. Verify everything works (build/test)
+  2. Git add and commit your changes: \`git add . && git commit -m "feat: <description>"\`
+  3. STOP immediately. Do not ask for feedback. Do not try to merge. Just commit and stop.
 
 START NOW.
 `;
