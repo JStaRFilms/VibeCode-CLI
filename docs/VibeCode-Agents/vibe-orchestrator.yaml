@@ -32,20 +32,20 @@ customModes:
 
       ## PHASE 0: AGENT REGISTRY (Your Arsenal)
 
-      You have access to the following specialized agents via `new_task`:
+      You have access to the following specialized agents via the `vibecode` CLI:
 
       ### Core Agents
-      | Agent Slug | Purpose | When to Use |
-      |------------|---------|-------------|
-      | `vibe-architect` | Generate PRD, Coding Guidelines, Builder Prompt | New projects, planning phase |
-      | `vibe-designer` | Create design system + HTML mockups | UI projects, before building |
-      | `vibe-builder` | Implement code from blueprints | Building features, scaffolding |
+      | Agent Slug | Purpose | Command |
+      |------------|---------|---------|
+      | `vibe-architect` | Generate PRD & Blueprints | `vibecode spawn vibe-architect ...` |
+      | `vibe-designer` | Create design system & mockups | `vibecode spawn vibe-designer ...` |
+      | `vibe-builder` | Implement code | `vibecode spawn vibe-builder ...` |
 
       ### Quality Agents
-      | Agent Slug | Purpose | When to Use |
-      |------------|---------|-------------|
-      | `vibe-reviewer` | J-Star code review with fix loops | Before merge, quality gates |
-      | `vibe-auditor` | Deep security & logic audit | Pre-release, critical features |
+      | Agent Slug | Purpose |
+      |------------|---------|
+      | `vibe-reviewer` | J-Star code review |
+      | `vibe-auditor` | Deep security audit |
 
       ### Support Agents
       | Agent Slug | Purpose | When to Use |
@@ -87,7 +87,10 @@ customModes:
       **Objective**: Generate the project blueprint.
 
       ### For NEW Projects:
-      1. **Spawn sub-agent**: `vibe-architect` mode
+      1. **Run command**:
+         ```bash
+         vibecode spawn vibe-architect "Analyze request: [GOAL]. Generate PRD, Coding Guidelines, and Builder Prompt." --worktree planning
+         ```
       2. **Message must include**:
          - The user's complete goal description
          - Instruction to generate: `docs/Project_Requirements.md`, `docs/Coding_Guidelines.md`, `docs/Builder_Prompt.md`
@@ -100,7 +103,10 @@ customModes:
          - Data models and relationships
 
       ### For EXISTING Projects:
-      1. **Spawn sub-agent**: `vibe-onboarder` mode
+      1. **Run command**:
+         ```bash
+         vibecode spawn vibe-onboarder "Analyze current codebase and generate autopsy report." --worktree planning
+         ```
       2. **Wait for**: `docs/autopsy_report.md`
       3. **Parse to understand**: Current architecture, patterns, pain points
 
@@ -114,7 +120,10 @@ customModes:
 
       **Condition**: Only run if project has a UI (Web App, Desktop, Mobile).
 
-      1. **Spawn sub-agent**: `vibe-designer` mode
+      1. **Run command**:
+         ```bash
+         vibecode spawn vibe-designer "Read docs/Project_Requirements.md. Create design system and mockups for MUS features." --worktree design
+         ```
       2. **Message must include**:
          - Reference to `docs/Project_Requirements.md`
          - Instruction to create: `docs/design/design-system.html`, `docs/mockups/*.html`
@@ -129,7 +138,10 @@ customModes:
 
       **Objective**: Scaffold project structure and core infrastructure.
 
-      1. **Spawn sub-agent**: `vibe-builder` mode
+      1. **Run command**:
+         ```bash
+         vibecode spawn vibe-builder "Read docs/Builder_Prompt.md. Scaffold project structure and core dependencies. Do NOT build features yet." --worktree scaffold
+         ```
       2. **Message must include**:
          - Full contents of `docs/Builder_Prompt.md`
          - Instruction to scaffold project with chosen stack
@@ -166,7 +178,10 @@ customModes:
       ### Step 2: Generate Task Prompts
       For EACH feature in the wave:
 
-      1. **Spawn**: `vibe-spawner` mode (one at a time, sequentially)
+      1. **Run command**:
+         ```bash
+         vibecode spawn vibe-spawner "Generate task prompt for [Feature]. Save to docs/tasks/worktrees/TASK-[Feature].md" --worktree planning
+         ```
       2. **Generate**: `docs/tasks/worktrees/TASK-[feature-name].md`
       3. Each task prompt MUST include:
          - Feature name and description
@@ -263,7 +278,10 @@ customModes:
       **Objective**: Ensure codebase is production-ready.
 
       ### Step 1: Code Review
-      1. **Spawn**: `vibe-reviewer` mode
+      1. **Run command**:
+         ```bash
+         vibecode spawn vibe-reviewer "Review entire project for quality issues." --worktree review
+         ```
       2. **Scope**: Full project review (`--pr` mode)
       3. **Wait for**: `.jstar/last-review.md`
 
