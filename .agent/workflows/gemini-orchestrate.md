@@ -1,114 +1,63 @@
 ---
-description: Spawn parallel Gemini CLI agents in YOLO mode for autonomous development
+description: Orchestrate parallel AI agents using the VibeCode CLI
 ---
 
-# Gemini CLI Orchestrator Workflow
+# VibeCode Orchestrator Workflow
 
-This workflow spawns multiple Gemini CLI instances in parallel, each working on a separate feature in its own git worktree.
+This workflow uses the `vibecode` CLI to spawn, manage, and merge parallel AI agents working in isolated git worktrees.
 
 ## Prerequisites
-
-1. Gemini CLI installed and authenticated
-2. Windows Terminal installed
-3. Git repository initialized
-4. Task prompts in `docs/tasks/worktrees/TASK-*.md`
+- `vibecode` CLI installed (`pnpm link --global`)
+- Windows Terminal (`wt`)
+- Git repository initialized
 
 ---
 
-## Quick Start: Single Agent
+## 1. Single Agent Task
 
 // turbo
-1. Spawn a single agent for a quick task:
-```powershell
-.\scripts\spawn-gemini-agent.ps1 -Task "Create a hello world component" -WorktreeName "hello"
+1. Spawn an agent to build a specific feature:
+```bash
+vibecode spawn vibe-builder "Create a new [FeatureName] component in src/components/[Path]. Ensure strict typing." --worktree [feature-name]
 ```
 
----
-
-## Full Orchestration: Multiple Parallel Agents
-
-### Step 1: Prepare Task Prompts
-
-Create task files in `docs/tasks/worktrees/`:
-```
-docs/tasks/worktrees/
-├── TASK-auth.md
-├── TASK-dashboard.md
-└── TASK-settings.md
-```
-
-Each task file should follow the VibeCode task prompt format.
-
-### Step 2: Run the Orchestrator
+## 2. Monitor Progress
 
 // turbo
-2. Execute the orchestrator:
-```powershell
-.\scripts\gemini-orchestrator.ps1 -TaskDir "docs/tasks/worktrees"
+2. Watch agent status in real-time:
+```bash
+vibecode status --watch
 ```
 
-This will:
-- Create a git worktree for each task
-- Spawn a Gemini CLI agent in a new terminal tab for each
-- All agents run in YOLO mode (full auto-approve)
-
-### Step 3: Monitor Progress
-
-Watch the terminal tabs. Each agent will:
-1. Read its task prompt
-2. Implement the feature
-3. Commit changes to its feature branch
-
-### Step 4: Merge Results
+## 3. Review & Merge
 
 // turbo
-3. After all agents complete, merge features:
-```powershell
-# From main project directory
-git merge feat-auth --no-edit
-git merge feat-dashboard --no-edit
-git merge feat-settings --no-edit
-```
-
-// turbo
-4. Clean up worktrees:
-```powershell
-git worktree remove ../project-feat-auth
-git worktree remove ../project-feat-dashboard
-git worktree remove ../project-feat-settings
+3. Once the agent status is `[OK] complete`, merge the feature:
+```bash
+vibecode merge [feature-name]
 ```
 
 ---
 
-## Configuration Options
+## Advanced: Parallel Orchestration
 
-### Approval Modes
+To run multiple features at once:
 
-| Mode | Description |
-|------|-------------|
-| `yolo` | Auto-approve ALL actions (default) |
-| `auto_edit` | Auto-approve file edits only, prompt for terminal commands |
-| `default` | Prompt for everything |
-
-### Parallel Limit
-
-```powershell
-# Limit to 2 concurrent agents
-.\scripts\gemini-orchestrator.ps1 -MaxParallel 2
+1. Spawn multiple agents:
+```bash
+vibecode spawn vibe-builder "Build Auth Login" --worktree auth-login
+vibecode spawn vibe-builder "Build Dashboard Stats" --worktree dash-stats
+vibecode spawn vibe-designer "Design Landing Page" --worktree landing-ui
 ```
 
----
+2. Watch them all:
+```bash
+vibecode status --watch
+```
 
-## Troubleshooting
-
-**Windows Terminal not opening tabs?**
-- Ensure `wt` is in your PATH
-- Try running from Windows Terminal directly
-
-**Agents not finding task files?**
-- Use relative paths from project root
-- Verify task file naming: `TASK-{feature}.md`
-
-**Merge conflicts?**
-- Agents work on separate files when possible
-- For conflicts, resolve manually then continue
+3. Merge as they finish:
+```bash
+vibecode merge auth-login
+vibecode merge dash-stats
+vibecode merge landing-ui
+```
